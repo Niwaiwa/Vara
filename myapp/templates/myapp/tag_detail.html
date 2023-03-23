@@ -1,14 +1,12 @@
 {% extends "myapp/base.html" %}
 
-{% block title %}
-    Video List
-{% endblock %}
-
 {% block content %}
-    <h1>Video List</h1>
+    <h1>Tag: {{ tag.name }}</h1>
     <ul>
         {% for video in videos %}
             <li><a href="/myapp/videos/{{ video.id }}/">{{ video.title }}</a></li>
+        {% empty %}
+            <li>No videos found.</li>
         {% endfor %}
     </ul>
 {% endblock %}

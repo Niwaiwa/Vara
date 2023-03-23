@@ -1,0 +1,18 @@
+{% extends "myapp/base.html" %}
+
+{% block content %}
+    <video controls>
+        <source src="{{ video.video_file.url }}" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+    <h1>{{ video.title }}</h1>
+    <h2>{{ video.description }}</h2>
+    <h3>Tags:</h3>
+    <ul>
+        {% for tag in tags %}
+            <li><a href="/myapp/tags/{{ tag.id }}/">{{ tag.name }}</a></li>
+        {% empty %}
+            <li>No tags found.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
