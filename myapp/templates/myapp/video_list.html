@@ -1,0 +1,14 @@
+{% extends "myapp/base.html" %}
+
+{% block title %}
+    Video List
+{% endblock %}
+
+{% block content %}
+    <h1>Video List</h1>
+    <ul>
+        {% for video in videos %}
+            <li>{{ video.title }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
