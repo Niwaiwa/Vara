@@ -14,8 +14,13 @@
             <li><div>My site</div></li>
             <li><a href="/myapp/">Index</a></li>
             <li><a href="/myapp/videos/">Video List</a></li>
+            {% if user.is_authenticated %}
+            <li style="float:right"><a href="/myapp/logout/">Logout</a></li>
+            <li style="float:right"><a href="/myapp/mypage/">Mypage</a></li>
+            {% else %}
             <li style="float:right"><a href="/myapp/login/">Login</a></li>
             <li style="float:right"><a href="/myapp/register/">Register</a></li>
+            {% endif %}
           </ul>
         </nav>
     </header>

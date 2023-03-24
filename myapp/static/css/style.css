@@ -79,3 +79,59 @@ footer {
     text-align: center;
     padding: 5px;
 }
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  }
+  
+  .form-control:focus {
+    border-color: #007bff;
+    outline: 0;
+    box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
+  }
+  
+  .btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  .btn-primary:hover {
+    color: #fff;
+    background-color: #0069d9;
+    border-color: #0062cc;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-title {
+    margin-bottom: 1rem;
+  }
+
+  .mypage {
+    margin: 0 auto;
+    width: 80%;
+  }
+  
+  .mypage h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .mypage p {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
