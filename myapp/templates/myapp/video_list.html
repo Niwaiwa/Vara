@@ -5,10 +5,20 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Video List</h1>
-    <ul>
-        {% for video in videos %}
-            <li><a href="/myapp/videos/{{ video.id }}/">{{ video.title }}</a></li>
-        {% endfor %}
-    </ul>
+    <div>
+        <ul>
+            {% for video in videos %}
+                <li><a href="/myapp/videos/{{ video.id }}/">{{ video.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <div>
+            <div class="filter-title">Filter</div>
+            <ul>
+                <li><a href="/myapp/videos/?filter=latest">Latest</a></li>
+                <li><a href="/myapp/videos/?filter=oldest">Oldest</a></li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}

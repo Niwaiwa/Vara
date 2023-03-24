@@ -4,13 +4,19 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}MyApp{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
 </head>
 <body>
     <header>
         <nav>
-            <ul>
-                <li><a href="{% url 'video_list' %}">Videos</a></li>
-            </ul>
+          <ul>
+            <li><div>My site</div></li>
+            <li><a href="/myapp/">Index</a></li>
+            <li><a href="/myapp/videos/">Video List</a></li>
+            <li style="float:right"><a href="/myapp/login/">Login</a></li>
+            <li style="float:right"><a href="/myapp/register/">Register</a></li>
+          </ul>
         </nav>
     </header>
     <main>
