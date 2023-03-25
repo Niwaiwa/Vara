@@ -1,14 +1,36 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-
 from django.http import HttpResponse
-from .models import Video, Tag
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from .models import Video, Tag, TagVideo
+from .forms import VideoCreateForm
 
 
 def index(request):
     return redirect('/myapp/videos/')
+
+@login_required(login_url='/myapp/login/')
+def video_create(request):
+    if request.method == 'POST':
+        form = VideoCreateForm(request.POST)
+        if form.is_valid():
+            title: str = form.cleaned_data['title']
+            description: str = form.cleaned_data['description']
+            url: str = form.cleaned_data['url']
+            tags: str = form.cleaned_data['tags']
+            user = request.user
+            video = Video.objects.create(title=title, description=description, url=url, user=user)
+            if tags:
+                tag_names = [name.strip() for name in tags.split(',')]
+                tag_obj_set = (Tag(name=tag) for tag in tag_names)
+                tag_objs = Tag.objects.bulk_create(tag_obj_set)
+                tag_videos = (TagVideo(tag=tag, video=video) for tag in tag_obj_set)
+                _ = TagVideo.objects.bulk_create(tag_videos)
+            return redirect(f'/myapp/videos/{video.pk}/')
+        return render(request, 'myapp/video_create.html', {'form': form})
+    else:
+        return render(request, 'myapp/video_create.html')
     
 def video_list(request):
     videos = Video.objects.all()
@@ -27,9 +49,9 @@ def tag_detail(request, id):
 
 def user_register(request):
     if request.method == 'POST':
-        uname = request.POST.get('username')
-        pwd = request.POST.get('password')
-        email = request.POST.get('email')
+        uname: str = request.POST.get('username')
+        pwd: str = request.POST.get('password')
+        email: str = request.POST.get('email')
         if User.objects.filter(username=uname).count() > 0:
             return HttpResponse('Username already exists.')
         else:
