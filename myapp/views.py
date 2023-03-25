@@ -8,13 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 
 
 def index(request):
-    if 'user' in request.session:
-        current_user = request.session['user']
-        param = {'current_user': current_user}
-    else:
-        param = {}
-    videos = Video.objects.all()
-    return render(request, 'base.html', param.update({'videos': videos}))
+    return redirect('/myapp/videos/')
     
 def video_list(request):
     videos = Video.objects.all()
