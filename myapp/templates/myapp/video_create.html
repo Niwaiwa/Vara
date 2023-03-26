@@ -6,22 +6,22 @@
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="create-form-group">
-            <label class="create-form-label" for="title">Title</label>
+            <label for="title">Title</label>
             <input type="text" class="create-form-input" id="title" name="title" required>
         </div>
         <div class="create-form-group">
-            <label class="create-form-label" for="descr iption">Description</label>
+            <label for="descr iption">Description</label>
             <textarea id="description" class="create-form-textarea" name="description" rows="5" required></textarea>
         </div>
         <div class="create-form-group">
-            <label class="create-form-label" for="url"> URL</label>
+            <label for="url"> URL</label>
             <input type="url" class="create-form-input" id="url" name="url" required>
         </div>
         <div class="create-form-group">
-            <label class="create-form-label" for="tags" >Tags</label>
+            <label for="tags" >Tags</label>
             <input type="text" class="create-form-input" id="tags" name="tags" placeholder="tag1, tag2, tag3">
         </div>
-        <button type="submit" class="create-form-button">Create Video</button>
+        <button type="submit" class="btn btn-primary">Create Video</button>
     </form>
 </div>
 {% endblock %}
