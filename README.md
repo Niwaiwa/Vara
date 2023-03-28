@@ -1,7 +1,15 @@
 # Vara
  A video streaming site about iwara copy.
 
-## database
+## run server
+
+local
+
+```
+python manage.py runserver
+```
+
+## start database
 
 start db
 
@@ -34,4 +42,16 @@ display migrate sql
 
 ```
 python manage.py sqlmigrate myapp 0001
+```
+
+## dotenv
+
+```
+SECRET_KEY=
+DEBUG=
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
+DB_HOST=
+DB_PORT=
 ```
