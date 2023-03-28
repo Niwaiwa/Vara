@@ -18,6 +18,11 @@ header {
     background-color: #fff;
 }
 
+div {
+    box-sizing: content-box;
+    width: 100%;
+}
+
 nav {
 
 }
@@ -150,7 +155,9 @@ footer {
     margin-bottom: 0.5rem;
 }
 
-.create-form, .login, .register {
+.create-form,
+.login,
+.register {
     max-width: 800px;
     margin: 0 auto;
     display: flex;
@@ -175,4 +182,83 @@ footer {
 .create-form-input::placeholder,
 .create-form-textarea::placeholder {
     color: #aaa;
+}
+
+.video-detail {
+    width: 70%;
+    padding: 20px;
+    background-color: #fff;
+    display: flex;
+    flex-wrap: nowrap;
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+.videoplayer {
+    width: 100%;
+    height: 400px;
+    /* background-color: #000; */
+}
+
+.video-tags {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px 0;
+}
+
+.video-tags li {
+    display: inline-block;
+}
+
+.video-tags li::after {
+    content: ',';
+    margin-right: 7.5px;
+}
+
+.video-tags li:last-child:after {
+    content: '';
+    margin-right: 0px;
+}
+
+.sidebar {
+    background-color: #f2f2f2;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.sidebar h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.sidebar p {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+/* メディアクエリを使用して、画面サイズに応じたスタイルを指定する */
+@media (max-width: 767px) {
+    /* 画面幅が767px以下の場合、サイドバーの幅を100%にする */
+    .sidebar {
+        width: 100%;
+            margin-bottom: 20px;
+    }
+}
+
+.mt-4 {
+    margin-top: 1.5rem;
+}
+
+.col-12 {
+    flex-basis: 75%;
+    width: 75%;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.col-3 {
+    flex-basis: 25%;
+    width: 25%;
+    padding-left: 15px;
+    padding-right: 15px;
 }

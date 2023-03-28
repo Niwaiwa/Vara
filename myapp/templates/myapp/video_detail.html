@@ -1,18 +1,55 @@
 {% extends "myapp/base.html" %}
 
 {% block content %}
-    <video controls>
-        <source src="{{ video.video_file.url }}" type="video/mp4">
-        Your browser does not support HTML5 video.
-    </video>
-    <h1>{{ video.title }}</h1>
-    <h2>{{ video.description }}</h2>
-    <h3>Tags:</h3>
-    <ul>
-        {% for tag in tags %}
-            <li><a href="/myapp/tags/{{ tag.id }}/">{{ tag.name }}</a></li>
-        {% empty %}
-            <li>No tags found.</li>
-        {% endfor %}
-    </ul>
+<div class="video-detail">
+    <div class="col-12">
+        <div class="videoplayer">
+            <video width=100% controls>
+                <source src="{{ video.video_file.url }}" type="video/mp4">
+                Your browser does not support HTML5 video.
+            </video>
+        </div>
+        <div>
+            <h1>{{ video.title }}</h1>
+        </div>
+        <!-- <div>
+            <a href="/myapp/videos/{{ video.id }}/like/">Like</a>
+            <a href="/myapp/videos/{{ video.id }}/dislike/">Dislike</a>
+        </div> -->
+        <!-- <div>
+            <span>Likes: {{ video.likes }}</span>
+            <span>Dislikes: {{ video.dislikes }}</span>
+        </div> -->
+        <!-- <div>
+            <span>Created by: {{ video.user.username }}</span>
+        </div> -->
+        <!-- <div>
+            <span>Created at: {{ video.created_at }}</span>
+        </div> -->
+        <!-- <div>
+            <span>Views: {{ video.views }}</span>
+        </div> -->
+        <!-- <div>
+            <span>Comments: {{ video.comments }}</span>
+        </div> -->
+        <div>
+            <div>{{ video.description }}</div>
+        </div>
+        <div class="mt-4">
+            <ul class="video-tags">
+                {% for tag in tags %}
+                    <li><a href="/myapp/tags/{{ tag.id }}/">{{ tag.name }}</a></li>
+                {% empty %}
+                    <li>No tags found.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="sidebar">
+            <h3>Like</h3>
+            <p>content</p>
+        </div>
+    </div>
+</div>
 {% endblock %}
