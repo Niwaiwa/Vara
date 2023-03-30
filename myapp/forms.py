@@ -6,3 +6,6 @@ class VideoCreateForm(forms.Form):
     description = forms.CharField(widget=forms.Textarea)
     url = forms.URLField()
     tags = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'tag1, tag2, tag3'}))
+
+class AvatarUploadForm(forms.Form):
+    file = forms.ImageField(required=True)

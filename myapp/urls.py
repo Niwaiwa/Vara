@@ -1,7 +1,8 @@
 from django.urls import path
 
 from . import views
-from myapp.views import video_list, video_detail, tag_detail, user_register, user_login, user_logout, mypage, video_create
+from myapp.views import video_list, video_detail, tag_detail, user_register, user_login, \
+    user_logout, mypage, video_create, avatar_upload
 
 
 urlpatterns = [
@@ -14,4 +15,5 @@ urlpatterns = [
     path('login/', user_login, name='login'),
     path('logout/', user_logout, name='logout'),
     path('mypage/', mypage, name='mypage'),
+    path('avatar-upload/', avatar_upload, name='avatar_upload'),
 ]

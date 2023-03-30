@@ -2,8 +2,20 @@
 
 {% block content %}
 <div class="mypage">
-  <h2>My Page</h2>
-  <p>Username: {{ user.username }}</p>
-  <p>Email: {{ user.email }}</p>
+  <div class="avatar">
+    {% load static %}
+    <a href="{% url 'avatar_upload' %}">
+      {% if user_avatar %}
+        <img src="{{ user_avatar.avatar.url }}" alt="{{ user.username }}">
+      {% else %}
+        <img src="{% static 'default_avatar.png' %}" alt="{{ user.username }}">
+      {% endif %}
+    </a>
+  </div>
+  <div class="user-info">
+    <h2>My Page</h2>
+    <p class="username">{{ user.username }}</p>
+    <p class="email">{{ user.email }}</p>
+  </div>
 </div>
 {% endblock %}

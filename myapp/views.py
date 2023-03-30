@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from .models import Video, Tag, TagVideo
-from .forms import VideoCreateForm
+from django.core.exceptions import ObjectDoesNotExist
+from .models import Video, Tag, TagVideo, UserAvatar
+from .forms import VideoCreateForm, AvatarUploadForm
 
 
 def index(request):
@@ -81,4 +82,23 @@ def user_logout(request):
 @login_required(login_url='/myapp/login/')
 def mypage(request):
     user = request.user
-    return render(request, 'myapp/mypage.html', {'user': user})
+    user_avatar = UserAvatar.objects.get(user_id=user.id)
+    return render(request, 'myapp/mypage.html', {'user': user, 'user_avatar': user_avatar})
+
+@login_required(login_url='/myapp/login/')
+def avatar_upload(request):
+    if request.method == 'POST':
+        form = AvatarUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = request.user
+            try:
+                user_avatar = UserAvatar.objects.get(user_id=user.id)
+                user_avatar.avatar = form.cleaned_data['file']
+                user_avatar.save()
+            except ObjectDoesNotExist:
+                user_avatar = UserAvatar.objects.create(user=user, avatar=form.cleaned_data['file'])
+            return redirect('/myapp/mypage/')
+        else:
+            return render(request, 'myapp/avatar_upload.html', {'form': form})
+    else:
+        return render(request, 'myapp/avatar_upload.html')
