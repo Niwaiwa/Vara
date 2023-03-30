@@ -5,14 +5,15 @@
 {% endblock %}
 
 {% block content %}
-    <div>
+<div class="video-list">
+    <div class="col-12">
         <ul>
             {% for video in videos %}
                 <li><a href="/myapp/videos/{{ video.id }}/">{{ video.title }}</a></li>
             {% endfor %}
         </ul>
     </div>
-    <div>
+    <div class="col-3">
         <div>
             <div class="filter-title">Filter</div>
             <ul>
@@ -21,4 +22,5 @@
             </ul>
         </div>
     </div>
+</div>
 {% endblock %}
