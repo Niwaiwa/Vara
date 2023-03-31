@@ -2,20 +2,23 @@
 
 {% block content %}
 <div class="mypage">
-  <div class="avatar">
-    {% load static %}
-    <a href="{% url 'avatar_upload' %}">
-      {% if user_avatar %}
-        <img src="{{ user_avatar.avatar.url }}" alt="{{ user.username }}">
-      {% else %}
-        <img src="{% static 'default_avatar.png' %}" alt="{{ user.username }}">
-      {% endif %}
-    </a>
+  <div class="col-12">
+    <div class="avatar">
+      {% load static %}
+      <a href="{% url 'avatar_upload' %}">
+        {% if user_avatar %}
+          <img src="{{ user_avatar.avatar.url }}" alt="{{ user.username }}">
+        {% else %}
+          <img src="{% static 'default_avatar.png' %}" alt="{{ user.username }}">
+        {% endif %}
+      </a>
+    </div>
+    <div class="user-info">
+      <h2>My Page</h2>
+      <p class="username">{{ user.username }}</p>
+      <p class="email">{{ user.email }}</p>
+    </div>
   </div>
-  <div class="user-info">
-    <h2>My Page</h2>
-    <p class="username">{{ user.username }}</p>
-    <p class="email">{{ user.email }}</p>
-  </div>
+  <div class="col-3"></div>
 </div>
 {% endblock %}
