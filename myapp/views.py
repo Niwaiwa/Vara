@@ -58,6 +58,7 @@ def unlike_video(request):
     video_id = request.POST.get('video_id')
     video = get_object_or_404(Video, id=video_id)
     video.likes.remove(request.user)
+    return redirect(f'/myapp/videos/{video_id}/')
 
 def user_register(request):
     if request.method == 'POST':
