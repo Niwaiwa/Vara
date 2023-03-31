@@ -42,6 +42,6 @@ class VideoLike(models.Model):
 
 class UserAvatar(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    avatar = models.ImageField(upload_to=unique_filename('avatars/'), default='avatars/default_avatar.png')
+    avatar = models.ImageField(upload_to=unique_filename('avatars/'))
     def __str__(self):
         return self.avatar.name

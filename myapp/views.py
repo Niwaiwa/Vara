@@ -82,7 +82,10 @@ def user_logout(request):
 @login_required(login_url='/myapp/login/')
 def mypage(request):
     user = request.user
-    user_avatar = UserAvatar.objects.get(user_id=user.id)
+    try:
+        user_avatar = UserAvatar.objects.get(user_id=user.id)
+    except ObjectDoesNotExist:
+        user_avatar = None
     return render(request, 'myapp/mypage.html', {'user': user, 'user_avatar': user_avatar})
 
 @login_required(login_url='/myapp/login/')
