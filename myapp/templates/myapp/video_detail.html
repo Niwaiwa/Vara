@@ -38,7 +38,7 @@
         <div class="mt-4">
             <ul class="video-tags">
                 {% for tag in tags %}
-                    <li><a href="/myapp/tags/{{ tag.id }}/">{{ tag.name }}</a></li>
+                    <li><a href="/myapp/videos/?tag={{ tag.name }}">{{ tag.name }}</a></li>
                 {% empty %}
                     <li>No tags found.</li>
                 {% endfor %}

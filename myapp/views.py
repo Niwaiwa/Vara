@@ -34,7 +34,11 @@ def video_create(request):
         return render(request, 'myapp/video_create.html')
     
 def video_list(request):
-    videos = Video.objects.all()
+    tag = request.GET.get('tag')
+    if tag:
+        videos = Video.objects.filter(tagvideo__tag__name=tag)
+    else:
+        videos = Video.objects.all()
     return render(request, 'myapp/video_list.html', {'videos': videos})
 
 def video_detail(request, id):

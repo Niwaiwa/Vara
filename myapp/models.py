@@ -1,20 +1,24 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.deconstruct import deconstructible
+import os, base64, uuid
 
-
-def unique_filename(path):
+@deconstructible
+class UniqueFilename:
     """
     Enforce unique upload file names.
     Usage:
     class MyModel(models.Model):
         file = ImageField(upload_to=unique_filename("path/to/upload/dir"))
     """
-    import os, base64, uuid
-    def _func(instance, filename):
+    def __init__(self, path):
+        self.path = path
+    def __call__(self, instance, filename):
         name, ext = os.path.splitext(filename)
         name = base64.urlsafe_b64encode(uuid.uuid4().bytes).decode('utf-8').replace('=', '')
-        return os.path.join(path, f"{name}{ext}")
-    return _func
+        return os.path.join(self.path, f"{name}{ext}")
+
+unique_filename = UniqueFilename("avatars/")
 
 
 class Video(models.Model):
@@ -28,7 +32,7 @@ class Video(models.Model):
         return self.title
 
 class Tag(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     def __str__(self):
         return self.name
 
@@ -42,6 +46,6 @@ class VideoLike(models.Model):
 
 class UserAvatar(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    avatar = models.ImageField(upload_to=unique_filename('avatars/'))
+    avatar = models.ImageField(upload_to=unique_filename)
     def __str__(self):
         return self.avatar.name
