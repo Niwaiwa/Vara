@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
+from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Video, Tag, TagVideo, UserAvatar
+from .models import Video, Tag, UserAvatar
 from .forms import VideoCreateForm, AvatarUploadForm
 
 
@@ -26,8 +27,7 @@ def video_create(request):
                 tag_names = [name.strip() for name in tags.split(',')]
                 tag_obj_set = (Tag(name=tag) for tag in tag_names)
                 tag_objs = Tag.objects.bulk_create(tag_obj_set)
-                tag_videos = (TagVideo(tag=tag, video=video) for tag in tag_obj_set)
-                _ = TagVideo.objects.bulk_create(tag_videos)
+                video.tags.add(*tag_objs)
             return redirect(f'/myapp/videos/{video.pk}/')
         return render(request, 'myapp/video_create.html', {'form': form})
     else:
@@ -36,21 +36,17 @@ def video_create(request):
 def video_list(request):
     tag = request.GET.get('tag')
     if tag:
-        videos = Video.objects.filter(tagvideo__tag__name=tag)
+        tag = Tag.objects.get(name=tag)
+        videos = tag.taged_videos.all()
     else:
         videos = Video.objects.all()
     return render(request, 'myapp/video_list.html', {'videos': videos})
 
 def video_detail(request, id):
     video = get_object_or_404(Video, id=id)
-    tags = Tag.objects.filter(tagvideo__video_id=id)
-    print(tags)
-    return render(request, 'myapp/video_detail.html', {'video': video, 'tags': tags})
+    return render(request, 'myapp/video_detail.html', {'video': video})
 
 def tag_detail(request, id):
-    tag = get_object_or_404(Tag, id=id)
-    videos = Video.objects.filter(tagvideo__tag_id=id)
-    return render(request, 'myapp/tag_detail.html', {'videos': videos, 'tag': tag})
 
 def user_register(request):
     if request.method == 'POST':
