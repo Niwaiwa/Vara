@@ -46,7 +46,18 @@ def video_detail(request, id):
     video = get_object_or_404(Video, id=id)
     return render(request, 'myapp/video_detail.html', {'video': video})
 
-def tag_detail(request, id):
+@require_POST
+def like_video(request):
+    video_id = request.POST.get('video_id')
+    video = get_object_or_404(Video, id=video_id)
+    video.likes.add(request.user)
+    return redirect(f'/myapp/videos/{video_id}/')
+
+@require_POST
+def unlike_video(request):
+    video_id = request.POST.get('video_id')
+    video = get_object_or_404(Video, id=video_id)
+    video.likes.remove(request.user)
 
 def user_register(request):
     if request.method == 'POST':

@@ -44,12 +44,33 @@
                 {% endfor %}
             </ul>
         </div>
-
+        <p>Likes: {{ video.likes.count }}</p>
+        {% if user.is_authenticated %}
+            {% if user in video.likes.all %}
+            <form method="POST" action="{% url 'unlike_video' %}">
+                {% csrf_token %}
+                <input type="hidden" name="video_id" value="{{ video.id }}">
+                <input type="submit" value="Unlike">
+            </form>
+            {% else %}
+            <form method="POST" action="{% url 'like_video' %}">
+                {% csrf_token %}
+                <input type="hidden" name="video_id" value="{{ video.id }}">
+                <input type="submit" value="Like">
+            </form>
+            {% endif %}
+        {% else %}
+            <p>Please log in to like this video.</p>
+        {% endif %}
     </div>
     <div class="col-3">
         <div class="sidebar">
             <h3>Like</h3>
-            <p>content</p>
+            {% for user in video.likes.all %}
+                <p>{{ user.username }}</p>
+            {% empty %}
+                <p>No likes found.</p>
+            {% endfor %}
         </div>
     </div>
 </div>
