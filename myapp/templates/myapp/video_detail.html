@@ -3,65 +3,78 @@
 {% block content %}
 <div class="video-detail">
     <div class="col-12">
-        <div class="videoplayer">
-            <video width=100% controls>
-                <source src="{{ video.video_file.url }}" type="video/mp4">
-                Your browser does not support HTML5 video.
-            </video>
+        <div class="video-detail-row">
+            <div class="videoplayer">
+                <video width=100% controls>
+                    <source src="{{ hls_url }}" type="application/x-mpegURL">
+                    {% if video.video_file %}
+                        <source src="{{ video.video_file.url }}" type="video/mp4">
+                    {% endif %}
+                    Your browser does not support HTML5 video.
+                </video>
+            </div>
         </div>
-        <div>
-            <h1>{{ video.title }}</h1>
+        <div class="video-detail-row">
+            <div style="font-size: 30px;">{{ video.title }}</div>
         </div>
-        <!-- <div>
-            <a href="/myapp/videos/{{ video.id }}/like/">Like</a>
-            <a href="/myapp/videos/{{ video.id }}/dislike/">Dislike</a>
-        </div> -->
-        <!-- <div>
-            <span>Likes: {{ video.likes }}</span>
-            <span>Dislikes: {{ video.dislikes }}</span>
-        </div> -->
-        <!-- <div>
-            <span>Created by: {{ video.user.username }}</span>
-        </div> -->
-        <!-- <div>
-            <span>Created at: {{ video.created_at }}</span>
-        </div> -->
+        <div class="video-detail-row">
+            <div style="font-size: 12px;">{{ video.created_at|date:"Y/m/d" }}</div>
+        </div>
+        <div class="video-detail-row">
+            <div class="video-detail-avatar">
+                {% load static %}
+                {% if video.user.useravatar %}
+                    <img src="{{ video.user.useravatar.avatar.url }}" alt="User Avatar" class="avatar">
+                {% else %}
+                    <img src="{% static 'default_avatar.png' %}" alt="User Avatar" class="avatar">
+                {% endif %}
+                <div>
+                    <p>{{ video.user.username }}</p>
+                </div>
+            </div>
+        </div>
         <!-- <div>
             <span>Views: {{ video.views }}</span>
         </div> -->
         <!-- <div>
             <span>Comments: {{ video.comments }}</span>
         </div> -->
-        <div>
+        <div class="video-detail-row">
             <div>{{ video.description }}</div>
         </div>
-        <div class="mt-4">
-            <ul class="video-tags">
-                {% for tag in video.tags.all %}
-                    <li><a href="/myapp/videos/?tag={{ tag.name }}">{{ tag.name }}</a></li>
-                {% empty %}
-                    <li>No tags found.</li>
-                {% endfor %}
-            </ul>
+        <div class="video-detail-row">
+            <div class="mt-4">
+                <ul class="video-tags">
+                    {% for tag in video.tags.all %}
+                        <li><a href="/myapp/videos/?tag={{ tag.name }}">{{ tag.name }}</a></li>
+                    {% empty %}
+                        <!-- <li>No tags found.</li> -->
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
-        <p>Likes: {{ video.likes.count }}</p>
-        {% if user.is_authenticated %}
-            {% if user in video.likes.all %}
-            <form method="POST" action="{% url 'unlike_video' %}">
-                {% csrf_token %}
-                <input type="hidden" name="video_id" value="{{ video.id }}">
-                <input type="submit" value="Unlike">
-            </form>
-            {% else %}
-            <form method="POST" action="{% url 'like_video' %}">
-                {% csrf_token %}
-                <input type="hidden" name="video_id" value="{{ video.id }}">
-                <input type="submit" value="Like">
-            </form>
-            {% endif %}
-        {% else %}
-            <p>Please log in to like this video.</p>
-        {% endif %}
+        <div class="video-detail-row">
+            <div class="video-detail-like">
+                {% if user.is_authenticated %}
+                    {% if user in video.likes.all %}
+                    <form method="POST" action="{% url 'unlike_video' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="video_id" value="{{ video.id }}">
+                        <input type="submit" value="Unlike">
+                    </form>
+                    {% else %}
+                    <form method="POST" action="{% url 'like_video' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="video_id" value="{{ video.id }}">
+                        <input type="submit" value="Like">
+                    </form>
+                    {% endif %}
+                {% else %}
+                    <p>Please log in to like this video.</p>
+                {% endif %}
+                <div>Likes: {{ video.likes.count }}</div>
+            </div>
+        </div>
     </div>
     <div class="col-3">
         <div class="sidebar">

@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.views.decorators.http import require_POST
@@ -15,17 +16,22 @@ def index(request):
 @login_required(login_url='/myapp/login/')
 def video_create(request):
     if request.method == 'POST':
-        form = VideoCreateForm(request.POST)
+        form = VideoCreateForm(request.POST, request.FILES)
         if form.is_valid():
             title: str = form.cleaned_data['title']
             description: str = form.cleaned_data['description']
             url: str = form.cleaned_data['url']
             tags: str = form.cleaned_data['tags']
+            video_file = ""
+            if request.FILES.get('video_file'):
+                video_file = request.FILES['video_file']
             user = request.user
-            video = Video.objects.create(title=title, description=description, url=url, user=user)
+            video = Video.objects.create(title=title, description=description, url=url, video_file=video_file, user=user)
             if tags:
                 tag_names = [name.strip() for name in tags.split(',')]
-                tag_obj_set = (Tag(name=tag) for tag in tag_names)
+                existed_tags = Tag.objects.filter(name__in=tag_names)
+                new_tags = set(tag_names) - set(existed_tags.values_list('name', flat=True))
+                tag_obj_set = (Tag(name=tag) for tag in new_tags)
                 tag_objs = Tag.objects.bulk_create(tag_obj_set)
                 video.tags.add(*tag_objs)
             return redirect(f'/myapp/videos/{video.pk}/')
@@ -44,6 +50,7 @@ def video_list(request):
 
 def video_detail(request, id):
     video = get_object_or_404(Video, id=id)
+    # print(video.user.useravatar.avatar.url)
     return render(request, 'myapp/video_detail.html', {'video': video})
 
 @require_POST

@@ -19,12 +19,14 @@ class UniqueFilename:
         return os.path.join(self.path, f"{name}{ext}")
 
 unique_filename = UniqueFilename("avatars/")
+unique_video_filename = UniqueFilename("videos/")
 
 
 class Video(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    url = models.URLField()
+    url = models.URLField(blank=True)
+    video_file = models.FileField(upload_to=unique_video_filename, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
