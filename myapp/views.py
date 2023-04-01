@@ -33,12 +33,45 @@ def video_create(request):
                 new_tags = set(tag_names) - set(existed_tags.values_list('name', flat=True))
                 tag_obj_set = (Tag(name=tag) for tag in new_tags)
                 tag_objs = Tag.objects.bulk_create(tag_obj_set)
-                video.tags.add(*tag_objs)
+                video.tags.add(*tag_objs, *existed_tags)
             return redirect(f'/myapp/videos/{video.pk}/')
         return render(request, 'myapp/video_create.html', {'form': form})
     else:
         return render(request, 'myapp/video_create.html')
-    
+
+@login_required(login_url='/myapp/login/')
+def video_update(request, id):
+    video = get_object_or_404(Video, pk=id)
+    if request.method == 'POST':
+        video.title = request.POST['title']
+        video.description = request.POST['description']
+        tags = request.POST['tags']
+        if tags:
+            tag_names = [name.strip() for name in tags.split(',')]
+            existed_tags = Tag.objects.filter(name__in=tag_names)
+            new_tags = set(tag_names) - set(existed_tags.values_list('name', flat=True))
+            tag_obj_set = (Tag(name=tag) for tag in new_tags)
+            tag_objs = Tag.objects.bulk_create(tag_obj_set)
+            if video.tags != existed_tags:
+                video.tags.clear()
+                video.tags.add(*tag_obj_set, *existed_tags)
+        else:
+            video.tags.clear()
+        video.url = request.POST['url']
+        if request.FILES.get('video_file'):
+            video.video_file = request.FILES['video_file']
+        video.save()
+        return redirect(f'/myapp/videos/{video.pk}/')
+    context = {'video': video}
+    return render(request, 'myapp/video_update.html', context)
+
+@login_required(login_url='/myapp/login/')
+@require_POST
+def video_delete(request ,id):
+    video = get_object_or_404(Video, id=id)
+    video.delete()
+    return redirect('/myapp/videos/')
+
 def video_list(request):
     tag = request.GET.get('tag')
     if tag:

@@ -15,6 +15,22 @@
             </div>
         </div>
         <div class="video-detail-row">
+            <div class="video-detail-action">
+                {% if user.is_authenticated %}
+                    {% if video.user == user %}
+                        <a href="{% url 'video_update' video.id %}">
+                            <button type="button" class="btn btn-primary">Update Video</button>
+                        </a>
+                        <form method="POST" action="{% url 'video_delete' video.id %}">
+                            {% csrf_token %}
+                            <!-- <input type="hidden" name="video_id" value="{{ video.id }}"> -->
+                            <button type="submit" class="btn btn-primary">Delete Video</button>
+                        </form>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="video-detail-row">
             <div style="font-size: 30px;">{{ video.title }}</div>
         </div>
         <div class="video-detail-row">
@@ -60,13 +76,13 @@
                     <form method="POST" action="{% url 'unlike_video' %}">
                         {% csrf_token %}
                         <input type="hidden" name="video_id" value="{{ video.id }}">
-                        <input type="submit" value="Unlike">
+                        <button type="submit" class="btn btn-primary">Unlike</button>
                     </form>
                     {% else %}
                     <form method="POST" action="{% url 'like_video' %}">
                         {% csrf_token %}
                         <input type="hidden" name="video_id" value="{{ video.id }}">
-                        <input type="submit" value="Like">
+                        <button type="submit" class="btn btn-primary">Like</button>
                     </form>
                     {% endif %}
                 {% else %}
