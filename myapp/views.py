@@ -153,7 +153,8 @@ def mypage(request):
         user_avatar = UserAvatar.objects.get(user_id=user.id)
     except ObjectDoesNotExist:
         user_avatar = None
-    return render(request, 'myapp/mypage.html', {'user': user, 'user_avatar': user_avatar})
+    videos = Video.objects.filter(user_id=user.id)
+    return render(request, 'myapp/mypage.html', {'user': user, 'user_avatar': user_avatar, 'videos': videos})
 
 @login_required(login_url='/myapp/login/')
 def avatar_upload(request):

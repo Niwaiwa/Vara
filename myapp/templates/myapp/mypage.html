@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="mypage">
-  <div class="col-12">
+  <div>
     <div class="avatar">
       {% load static %}
       <a href="{% url 'avatar_upload' %}">
@@ -14,9 +14,37 @@
       </a>
     </div>
     <div class="user-info">
-      <h2>My Page</h2>
-      <p class="username">{{ user.username }}</p>
-      <p class="email">{{ user.email }}</p>
+      <!-- <h2>My Page</h2> -->
+      <div class="username">{{ user.username }}</div>
+      <div class="email">{{ user.email }}</div>
+    </div>
+  </div>
+  <div class="col-12 mt-4">
+    <div class="video-list-items">
+        {% for video in videos %}
+            <div class="col-3 col-sm-3 col-lg-3">
+                <div class="video-teaser">
+                    <div class="video-thumbnail">
+                        <a href="/myapp/videos/{{ video.id }}/">
+                            {% load static %}
+                            {% if video.thumbnail %}
+                                <img src="{{ video.thumbnail.url }}" alt="{{ video.title }}">
+                            {% else %}
+                                <img src="{% static 'default_video_thumbnail.png' %}" alt="{{ video.title }}" width="auto" height="auto">
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="video-views">
+                        <a title="{{ video.title }}" href="/myapp/videos/{{ video.id }}/">
+                            <div class="text--text" tyle="font-size: 20px;">{{ video.title }}</div>
+                        </a>
+                    </div>
+                    <div class="video-bottom">
+                        <div class="text--text" style="font-size: 12px;">{{ video.created_at|date:"Y/m/d" }}</div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
   </div>
   <div class="col-3"></div>
