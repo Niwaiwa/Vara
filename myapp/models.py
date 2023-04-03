@@ -20,6 +20,7 @@ class UniqueFilename:
 
 unique_filename = UniqueFilename("avatars/")
 unique_video_filename = UniqueFilename("videos/")
+unique_video_thumbnail_filename = UniqueFilename("video_thumbnails/")
 
 
 class Video(models.Model):
@@ -32,6 +33,7 @@ class Video(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     tags = models.ManyToManyField('Tag', related_name='taged_videos', blank=True)
     likes = models.ManyToManyField(User, related_name='liked_videos', blank=True)
+    thumbnail = models.ImageField(upload_to=unique_video_thumbnail_filename, blank=True)
 
     def __str__(self):
         return self.title
