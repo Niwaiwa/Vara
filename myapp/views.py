@@ -73,12 +73,27 @@ def video_delete(request ,id):
     return redirect('/myapp/videos/')
 
 def video_list(request):
+    sort_map = {
+        'latest': '-created_at',
+        'oldest': 'created_at',
+    }
     tag = request.GET.get('tag')
-    if tag:
-        tag = Tag.objects.get(name=tag)
-        videos = tag.taged_videos.all()
+    sort = request.GET.get('sort')
+    if tag or sort:
+        if tag and sort:
+            tag = Tag.objects.get(name=tag)
+            videos = tag.taged_videos.all()
+            videos = videos.order_by(sort_map.get(sort, '-created_at'))
+        elif tag:
+            tag = Tag.objects.get(name=tag)
+            videos = tag.taged_videos.all()
+            videos = videos.order_by('-created_at')
+        elif sort:
+            videos = Video.objects.all()
+            videos = videos.order_by(sort_map.get(sort, '-created_at'))
     else:
         videos = Video.objects.all()
+        videos = videos.order_by('-created_at')
     return render(request, 'myapp/video_list.html', {'videos': videos})
 
 def video_detail(request, id):

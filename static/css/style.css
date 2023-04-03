@@ -82,13 +82,13 @@ main ul {
     padding: 0;
 }
 
-.filter {
+.sort {
     width: 25%;
     padding: 20px;
     background-color: #fff;
 }
 
-.filter-content {
+.sort-content {
     margin-top: 15px;
 }
 
