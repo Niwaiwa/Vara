@@ -3,19 +3,42 @@
 {% block content %}
 <div class="video-list">
     <div class="col-12">
-        <ul>
+        <div class="video-list-items">
             {% for video in videos %}
-                <li><a href="/myapp/videos/{{ video.id }}/">{{ video.title }}</a></li>
+                <div class="col-3 col-sm-3 col-lg-3">
+                    <div class="video-teaser">
+                        <div class="video-thumbnail">
+                            <a href="/myapp/videos/{{ video.id }}/">
+                                {% load static %}
+                                {% if video.thumbnail %}
+                                    <img src="{{ video.thumbnail.url }}" alt="{{ video.title }}">
+                                {% else %}
+                                    <img src="{% static 'default_video_thumbnail.png' %}" alt="{{ video.title }}" width="auto" height="auto">
+                                {% endif %}
+                            </a>
+                        </div>
+                        <div class="video-views">
+                            <a title="{{ video.title }}" href="/myapp/videos/{{ video.id }}/">
+                                <div class="text--text" tyle="font-size: 20px;">{{ video.title }}</div>
+                            </a>
+                        </div>
+                        <div class="video-bottom">
+                            <div class="text--text" style="font-size: 12px;">{{ video.created_at|date:"Y/m/d" }}</div>
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
-        </ul>
+        </div>
     </div>
     <div class="col-3">
         <div>
-            <div class="filter-title">Filter</div>
-            <ul>
-                <li><a href="/myapp/videos/?filter=latest">Latest</a></li>
-                <li><a href="/myapp/videos/?filter=oldest">Oldest</a></li>
-            </ul>
+            <div class="filter-title" style="font-size: 24px;">Filter</div>
+            <div class="filter-content">
+                <ul>
+                    <li><a href="/myapp/videos/?filter=latest">Latest</a></li>
+                    <li><a href="/myapp/videos/?filter=oldest">Oldest</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
