@@ -1,5 +1,5 @@
 # Vara
- A video streaming site about iwara copy.
+ A video streaming site practice.
 
 ## run server
 
